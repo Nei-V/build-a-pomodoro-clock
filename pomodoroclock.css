@@ -1,0 +1,64 @@
+body {
+    background: #ff9c08;
+    color: #fff;
+}
+
+a {
+    color: #fff;
+}
+
+p {
+    padding: 3em 0;
+}
+
+.moving-space{
+    position:relative;
+}
+
+#glass {
+    text-align: right;
+    padding:0;
+    width:400px;
+    z-index: 1;
+   
+}
+
+#miner {
+    text-align: left;
+    margin-bottom: -53px;
+    padding:0;
+    width:400px;
+    z-index: -1;
+    
+}
+.object {
+    transition: all 2s linear;
+      -webkit-transition: all 2s linear; /** Chrome & Safari **/
+      -ms-transition: all 2s linear; /** Opera **/
+  }
+
+.moving-space:hover .move-right{
+    transform: translate( -350px);
+    -webkit-transform: translate( -350px); /** Chrome & Safari **/
+    -ms-transform: translate( -350px); /** Firefox **/
+}
+
+#tunnel {
+height:52px;
+width:400px;
+padding:1px;
+background-color: blanchedalmond
+}
+
+#bricks{
+    height:52px;
+    width:400px;
+    margin-bottom:-53px;
+background-color: #c47708;
+background-image: url("data:image/svg+xml,%3Csvg width='21' height='22' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23231a13' fill-opacity='0.4'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+}
+
+svg {
+    background-color: #523a17;
+}
