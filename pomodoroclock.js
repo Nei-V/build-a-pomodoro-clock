@@ -42,10 +42,10 @@ let counterWorking = false;
 let tempTimerSeconds = 0;
 let tempTimerMinutes = 0;
 let tempTimerSecondsHelper = 0;
-let paused=false;
+let paused = false;
 let clockStarted = false;
 let sessionSliderMoved = false;
-let breakSliderMoved = "";
+let breakSliderMoved = false;
 let tempSession = 0;//original time of sessions
 let tempBreak = 0;//original time of breaks
 
@@ -108,6 +108,7 @@ function showTimeLeftEverySecBreak(timeInSeconds) {
 };
 
 function startAndStop() {
+    console.log("counter working in startAndStop",counterWorking);
     if (counterWorking) {
 
         if (sessionOrBreak == false) {
@@ -126,6 +127,19 @@ function startAndStop() {
             sessionSlider.disabled = true;
             breakSlider.addEventListener("click", () => {
                 console.log("break slider moved in break");
+                /*
+                breakSlider.oninput = function () {
+                    timeLeft.innerHTML = this.value;
+                };
+
+                /*
+                breakValue.innerHTML = breakSlider.value;
+                breakSlider.oninput = function () {
+                    breakValue.innerHTML = this.value;
+                };
+                */
+                getTimerHoursAndMinutes(sessionValue.innerHTML, breakValue.innerHTML, sessionSeconds);
+                breakSliderMoved = true;
             });
         };
         clearInterval(myVar);
@@ -145,18 +159,17 @@ function calculateCountdown(minutes, seconds) {
     console.log("NOW WORKING");
     console.log("session time in calculate", minutes, "and seconds", seconds);
     let totalTimeInSeconds = 60 * minutes + seconds;
-    console.log("in calculate - total seconds", totalTimeInSeconds);
+    console.log("in calculate session - total seconds", totalTimeInSeconds);
     function countEverySecond() {
         totalTimeInSeconds = totalTimeInSeconds - 1;
-        console.log("time left in sec: ", totalTimeInSeconds);
+        console.log("session time left in sec: ", totalTimeInSeconds);
         tempTimerSeconds = totalTimeInSeconds;
         tempTimerSecondsHelper = tempTimerSeconds % 60;
         tempTimerMinutes = (tempTimerSeconds - tempTimerSecondsHelper) / 60;
-        console.log(`tempTimerSeconds is ${tempTimerSeconds}`);
+       // console.log(`tempTimerSeconds is ${tempTimerSeconds}`);
         if (totalTimeInSeconds > -1) {
             showTimeLeftEverySec(totalTimeInSeconds);
-           
-            
+
         }
         else {
             clearInterval(myVar);
@@ -166,21 +179,27 @@ function calculateCountdown(minutes, seconds) {
     if (counterWorking == true) {
         myVar = setInterval(countEverySecond, 1000);
         //getTimerHoursAndMinutes(totalTimeInSeconds);
+        sessionOrBreak = false;
     };
-    sessionOrBreak = false;
+   
 };
 
 let myVarBreak;
 function calculateCountdownBreak(minutes, seconds) {
     console.log("NOW IN BREAK");
-    console.log("session time in calculate", minutes, "and seconds", seconds);
+    console.log("break time in calculate", minutes, "and seconds", seconds);
     let totalTimeInSeconds = 60 * minutes + seconds;
-    console.log("in calculate - total seconds", totalTimeInSeconds);
+    console.log("in calculate break - total seconds", totalTimeInSeconds);
     function countEverySecond() {
         totalTimeInSeconds = totalTimeInSeconds - 1;
-        console.log("time left in sec: ", totalTimeInSeconds);
+        console.log("break time left in sec: ", totalTimeInSeconds);
+        tempTimerSeconds = totalTimeInSeconds;
+        tempTimerSecondsHelper = tempTimerSeconds % 60;
+        tempTimerMinutes = (tempTimerSeconds - tempTimerSecondsHelper) / 60;
+        //console.log(`tempTimerSeconds is ${tempTimerSeconds}`);
         if (totalTimeInSeconds > -1) {
-            showTimeLeftEverySec(totalTimeInSeconds);
+            showTimeLeftEverySecBreak(totalTimeInSeconds);
+
         }
         else {
             clearInterval(myVarBreak);
@@ -190,37 +209,50 @@ function calculateCountdownBreak(minutes, seconds) {
     if (counterWorking == true) {
         myVarBreak = setInterval(countEverySecond, 1000);
         //getTimerHoursAndMinutes(totalTimeInSeconds);
+        sessionOrBreak = true;
+        
     };
-    sessionOrBreak = true;
+    
 };
 
 timeLeft.addEventListener("click", () => {
     console.log("Clicked");
+    console.log("session or break - false for session",sessionOrBreak);
     startAndStop();
     if (counterWorking == false) {
-        if (tempTimerSeconds==0){
-        getTimerHoursAndMinutes(sessionValue.innerHTML, breakValue.innerHTML, sessionSeconds);
+        if (tempTimerSeconds == 0) {
+            getTimerHoursAndMinutes(sessionValue.innerHTML, breakValue.innerHTML, sessionSeconds);
         }
+        /*
         else{
             console.log("SECOND CLICK");
             console.log(`temp minutes:${tempTimerMinutes}`);
-            getTimerHoursAndMinutes(tempTimerMinutes, breakValue.innerHTML, tempTimerSecondsHeler);
+            //getTimerHoursAndMinutes(tempTimerMinutes, breakValue.innerHTML, tempTimerSecondsHeler);
         };
+        */
     }
     else {
-        console.log("should run countdown");
+        console.log("should run countdown - counterworling is true");
         //clockStarted = true;
         if (sessionSliderMoved == true) {
+            console.log("sessionslider moved",sessionSliderMoved);
             calculateCountdown(sessionValue.innerHTML, sessionSeconds);
             sessionSliderMoved = false;
         }
+        else if (breakSliderMoved == true) {
+            console.log("breakslider moved",breakSliderMoved);
+            getTimerHoursAndMinutes(sessionValue.innerHTML, breakValue.innerHTML, sessionSeconds);
+            calculateCountdownBreak(breakValue.innerHTML, sessionSeconds);
+            breakSliderMoved = false;
+        }
         else {
-            if(tempTimerSeconds==0){
+            if (tempTimerSeconds == 0) {
+                getTimerHoursAndMinutes(sessionValue.innerHTML, breakValue.innerHTML, sessionSeconds);
                 calculateCountdown(sessionValue.innerHTML, sessionSeconds);
             }
-            else{
-            calculateCountdown(tempTimerMinutes, tempTimerSecondsHelper);
-          
+            else {
+                calculateCountdown(tempTimerMinutes, tempTimerSecondsHelper);
+
             };
         };
         counterWorking = true;
