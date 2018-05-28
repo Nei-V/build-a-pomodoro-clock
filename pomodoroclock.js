@@ -108,7 +108,7 @@ function showTimeLeftEverySecBreak(timeInSeconds) {
 };
 
 function startAndStop() {
-    console.log("counter working in startAndStop",counterWorking);
+    console.log("counter working in startAndStop", counterWorking);
     if (counterWorking) {
 
         if (sessionOrBreak == false) {
@@ -166,7 +166,7 @@ function calculateCountdown(minutes, seconds) {
         tempTimerSeconds = totalTimeInSeconds;
         tempTimerSecondsHelper = tempTimerSeconds % 60;
         tempTimerMinutes = (tempTimerSeconds - tempTimerSecondsHelper) / 60;
-       // console.log(`tempTimerSeconds is ${tempTimerSeconds}`);
+        // console.log(`tempTimerSeconds is ${tempTimerSeconds}`);
         if (totalTimeInSeconds > -1) {
             showTimeLeftEverySec(totalTimeInSeconds);
 
@@ -181,7 +181,7 @@ function calculateCountdown(minutes, seconds) {
         //getTimerHoursAndMinutes(totalTimeInSeconds);
         sessionOrBreak = false;
     };
-   
+
 };
 
 let myVarBreak;
@@ -210,14 +210,14 @@ function calculateCountdownBreak(minutes, seconds) {
         myVarBreak = setInterval(countEverySecond, 1000);
         //getTimerHoursAndMinutes(totalTimeInSeconds);
         sessionOrBreak = true;
-        
+
     };
-    
+
 };
 
 timeLeft.addEventListener("click", () => {
     console.log("Clicked");
-    console.log("session or break - false for session",sessionOrBreak);
+    console.log("session or break - false for session", sessionOrBreak);
     startAndStop();
     if (counterWorking == false) {
         if (tempTimerSeconds == 0) {
@@ -235,15 +235,19 @@ timeLeft.addEventListener("click", () => {
         console.log("should run countdown - counterworling is true");
         //clockStarted = true;
         if (sessionSliderMoved == true) {
-            console.log("sessionslider moved",sessionSliderMoved);
+            console.log("sessionslider moved", sessionSliderMoved);
             calculateCountdown(sessionValue.innerHTML, sessionSeconds);
             sessionSliderMoved = false;
         }
         else if (breakSliderMoved == true) {
-            console.log("breakslider moved",breakSliderMoved);
+            console.log("breakslider moved", breakSliderMoved);
             getTimerHoursAndMinutes(sessionValue.innerHTML, breakValue.innerHTML, sessionSeconds);
             calculateCountdownBreak(breakValue.innerHTML, sessionSeconds);
             breakSliderMoved = false;
+        }
+        else if ((sessionOrBreak == true) && (breakSliderMoved == false)) {
+            calculateCountdownBreak(tempTimerMinutes, tempTimerSecondsHelper);
+
         }
         else {
             if (tempTimerSeconds == 0) {
