@@ -27,19 +27,19 @@ body {
     opacity: 1;
 }
 
-.slider::-webkit-slider-thumb{
-    -webkit-appearance:none;
-    width:20px;
-    height:20px;
-    background:#523a17;
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #523a17;
     cursor: hand;
 }
 
-.slider::-moz-range-thumb{
-width:20px;
-height:20px;
-background:#523a17;
-cursor:hand;
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #523a17;
+    cursor: hand;
 }
 
 a {
@@ -58,26 +58,44 @@ p {
     text-align: right;
     padding: 0;
     width: 400px;
-    z-index: 1;
+    z-index: 999;
 }
 
+
+
+
 #miner {
+    --minerMarginLeft:0px;
+    margin-left:var(--minerMarginLeft);
     text-align: left;
-    margin-bottom: -53px;
+    margin-top: 1px;
+    margin-bottom: -52px;
+    padding: 0;
+    width: 400px;
+    z-index: 0;
+   
+}
+
+#relaxing {
+    position: relative;
+    text-align: right;
+    margin-bottom: -55px;
     padding: 0;
     width: 400px;
     z-index: -1;
 }
 
+
 .object {
-    transition: all 2s linear;
-    -webkit-transition: all 2s linear;
+    --timerForTransition: 60s;
+    transition: all var(--timerForTransition) linear;
+    -webkit-transition: all var(--timerForTransition) linear;
     /** Chrome & Safari **/
-    -ms-transition: all 2s linear;
+    -ms-transition: all var(--timerForTransition) linear;
     /** Opera **/
 }
 
-.moving-space:hover .move-right {
+.move-left {
     transform: translate( -350px);
     -webkit-transform: translate( -350px);
     /** Chrome & Safari **/
@@ -85,11 +103,22 @@ p {
     /** Firefox **/
 }
 
+
+
+
+.move-right {
+    transform: translate( 350px);
+    -webkit-transform: translate( 350px);
+    /** Chrome & Safari **/
+    -ms-transform: translate( 350px);
+    /** Firefox **/
+}
+
 #tunnel {
     height: 52px;
     width: 400px;
     padding: 1px;
-    background-color: blanchedalmond
+    background-color: blanchedalmond;
 }
 
 #bricks {
@@ -98,6 +127,15 @@ p {
     margin-bottom: -53px;
     background-color: #c47708;
     background-image: url("data:image/svg+xml,%3Csvg width='21' height='22' viewBox='0 0 42 44' xmlns='http://www.w3.org/2000/svg'%3E%3Cg id='Page-1' fill='none' fill-rule='evenodd'%3E%3Cg id='brick-wall' fill='%23231a13' fill-opacity='0.4'%3E%3Cpath d='M0 0h42v44H0V0zm1 1h40v20H1V1zM0 23h20v20H0V23zm22 0h20v20H22V23z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+#clearedTunnel {
+    position:relative;
+    height: 52px;
+    width: 400px;
+    margin-bottom: -52px;
+    background-color: #523a17;
+   z-index:-1;
 }
 
 svg {

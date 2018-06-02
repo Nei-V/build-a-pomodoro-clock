@@ -108,6 +108,7 @@ function showTimeLeftEverySecBreak(timeInSeconds) {
 function startAndStop() {
     console.log("counter working in startAndStop", counterWorking);
     if (counterWorking) {
+       
         breakSlider.addEventListener("click", () => {
 
             if (sessionOrBreak == false) {
@@ -135,8 +136,10 @@ function startAndStop() {
             breakSlider.disabled = false;
             sessionSlider.disabled = true;
         };
+        
         clearInterval(myVar);
         clearInterval(myVarBreak);
+        pauseTransitionRight();
         counterWorking = false;
     }
     else {
@@ -159,18 +162,26 @@ function calculateCountdown(minutes, seconds) {
         tempTimerSeconds = totalTimeInSeconds;
         tempTimerSecondsHelper = tempTimerSeconds % 60;
         tempTimerMinutes = (tempTimerSeconds - tempTimerSecondsHelper) / 60;
+        let objMiner=document.getElementById("miner");
+    let marginLeftMiner=window.getComputedStyle(objMiner).marginLeft;
+    let marginLeftMinerPx=marginLeftMiner.match(/\d+/);
         if (totalTimeInSeconds > -1) {
             showTimeLeftEverySec(totalTimeInSeconds);
+            startTransitionRight(totalTimeInSeconds,marginLeftMinerPx);
+           
         }
         else {
             clearInterval(myVar);
+           
             calculateCountdownBreak(breakValue.innerHTML, sessionSeconds);
         };
     };
     if (counterWorking == true) {
         sessionOrBreak = false;
+        
         myVar = setInterval(countEverySecond, 1000);
-    };
+        
+         };
 };
 
 let myVarBreak;
@@ -201,7 +212,7 @@ function calculateCountdownBreak(minutes, seconds) {
 };
 
 timeLeft.addEventListener("click", () => {
-    console.log("Clicked");
+       console.log("Clicked");
     console.log("session or break - false for session", sessionOrBreak);
     startAndStop();
     if (counterWorking == false) {
@@ -243,5 +254,38 @@ timeLeft.addEventListener("click", () => {
     };
 });
 
+
+let marginRightRelaxing="400px";
+function startTransitionRight(time,startPosition){
+    console.log("total time ", time," startposition miner ",startPosition);
+    //console.log("margin left miner in px", marginLeftMinerPx);
+let speed=(350 - startPosition)/time;
+let newPositionPx=+speed;
+let newPosition=newPositionPx + "px";
+document.getElementById("miner").style.marginLeft=newPosition;
+  //document.getElementById("miner").classList.add("move-right");
+    
+};
+
+function startTransitionLeft(){
+    //document.getElementById("relaxing").classList.add("move-left");
+
+};
+
+function pauseTransitionRight(){
+   
+};
+
+function pauseTransitionLeft(){
+
+};
+
+function endTransitionRight(){
+
+};
+
+function endTransitionLeft(){
+
+};
 
 
