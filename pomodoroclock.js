@@ -1,8 +1,7 @@
 
-/*I've replicated the exact functionalty of the example, but I think the example has
-a bug, as you can't change the session length if you pause during break time. I think
-that it should be possible to change the session length in break like you can change the break
-length in session */
+/*I've replicated the exact functionalty of the example - the legacy challenge - You can't change the session length if you pause during break time. I think
+the break
+*/
 
 
 document.getElementById("timers1").reset(); //the input has to be in a form in order to refresh the data
@@ -28,8 +27,6 @@ sessionSlider.oninput = function () {
     timeLeft.innerHTML = this.value;
     getTimerHoursAndMinutes(sessionValue.innerHTML, breakValue.innerHTML);
 };
-
-
 
 let sessionHours = 0;
 let sessionMinutes = 0;
@@ -110,7 +107,6 @@ function showTimeLeftEverySecBreak(timeInSeconds) {
 function startAndStop() {
     console.log("counter working in startAndStop", counterWorking);
     if (counterWorking) {
-
         if (sessionOrBreak == false) {
             breakSlider.disabled = false;
             sessionSlider.disabled = false;
@@ -126,7 +122,6 @@ function startAndStop() {
         };
 
         breakSlider.addEventListener("click", () => {
-
             if (sessionOrBreak == false) {
                 console.log("in session if false - while moving break slider in session", sessionOrBreak);
                 console.log("break slider moved in session");
@@ -139,8 +134,6 @@ function startAndStop() {
                 breakSliderMoved = true;
             };
         });
-
-
         clearInterval(myVar);
         clearInterval(myVarBreak);
         pauseTransitionRight();
@@ -178,8 +171,6 @@ function calculateCountdown(minutes, seconds) {
         tempTimerSeconds = totalTimeInSeconds;
         tempTimerSecondsHelper = tempTimerSeconds % 60;
         tempTimerMinutes = (tempTimerSeconds - tempTimerSecondsHelper) / 60;
-
-
         console.log(`newPositionPx ${newPositionPx}`);
         newPositionPx = newPositionPx + speedRight;
         console.log(`newPositionPx ${newPositionPx}`);
@@ -199,9 +190,7 @@ function calculateCountdown(minutes, seconds) {
     };
     if (counterWorking == true) {
         sessionOrBreak = false;
-
         myVar = setInterval(countEverySecond, 1000);
-
     };
 };
 
@@ -270,17 +259,14 @@ timeLeft.addEventListener("click", () => {
         }
         else if (breakSliderMoved == true) {
             console.log("breakslider moved", breakSliderMoved);
-
             breakSliderMoved = false;
             document.getElementById("relaxing").style.width="400px";
             calculateCountdownBreak(breakValue.innerHTML, sessionSeconds);
 
         }
         else if ((sessionOrBreak == true) && (breakSliderMoved == false)) {
-            breakSliderMoved = false;
-           
+            breakSliderMoved = false;           
             calculateCountdownBreak(tempTimerMinutes, tempTimerSecondsHelper);
-
         }
         else {
             if (tempTimerSeconds == 0) {
@@ -289,43 +275,24 @@ timeLeft.addEventListener("click", () => {
             }
             else {
                 calculateCountdown(tempTimerMinutes, tempTimerSecondsHelper);
-
             };
         };
         counterWorking = true;
     };
 });
 
-
 //let marginRightRelaxing = "400px";
 function startTransitionRight(time, startPosition) {
     console.log("total time ", time, " startposition miner ", startPosition);
     speedRight = (300 - startPosition) / time;
     console.log("speed", speedRight);
-
 };
 
 function startTransitionLeft(time, startPosition) {
    console.log(`total time ${time} startposition relaxing ${startPosition}`);
    speedLeft = (350 - (400 - startPosition)) / time;
    console.log("speed", speedLeft);
-
 };
 
-function pauseTransitionRight() {
-
-};
-
-function pauseTransitionLeft() {
-
-};
-
-function endTransitionRight() {
-
-};
-
-function endTransitionLeft() {
-
-};
 
 
