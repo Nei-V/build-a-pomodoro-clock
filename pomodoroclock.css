@@ -1,6 +1,11 @@
 body {
     background: #ff9c08;
     color: #fff;
+    margin-left: 20px;
+}
+
+header, footer {
+    text-align: center;
 }
 
 #timers {
@@ -15,7 +20,7 @@ body {
     appearance: none;
     -webkit-appearance: none;
     width: 100%;
-    height: 20px;
+    height: 10px;
     background: #e7b52b;
     outline: none;
     opacity: 0.7;
@@ -29,15 +34,15 @@ body {
 
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     background: #523a17;
     cursor: hand;
 }
 
 .slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
+    width: 10px;
+    height: 10px;
     background: #523a17;
     cursor: hand;
 }
@@ -47,7 +52,7 @@ a {
 }
 
 p {
-    padding: 3em 0;
+    padding: 0.5em 0;
 }
 
 .moving-space {
@@ -55,63 +60,34 @@ p {
 }
 
 #glass {
+    position: relative;
     text-align: right;
     padding: 0;
     width: 400px;
-    z-index: 999;
+    z-index: 100;
 }
 
-
-
-
 #miner {
-    --minerMarginLeft:0px;
-    margin-left:var(--minerMarginLeft);
+    --minerMarginLeft: 0px;
+    margin-left: var(--minerMarginLeft);
+    position: relative;
     text-align: left;
     margin-top: 1px;
     margin-bottom: -52px;
     padding: 0;
     width: 400px;
-    z-index: 0;
-   
+    z-index: 100;
 }
 
 #relaxing {
+    --relaxingMarginRight: 400px;
+    margin-right: var(--relaxingMarginRight);
     position: relative;
     text-align: right;
     margin-bottom: -55px;
     padding: 0;
     width: 400px;
     z-index: -1;
-}
-
-
-.object {
-    --timerForTransition: 60s;
-    transition: all var(--timerForTransition) linear;
-    -webkit-transition: all var(--timerForTransition) linear;
-    /** Chrome & Safari **/
-    -ms-transition: all var(--timerForTransition) linear;
-    /** Opera **/
-}
-
-.move-left {
-    transform: translate( -350px);
-    -webkit-transform: translate( -350px);
-    /** Chrome & Safari **/
-    -ms-transform: translate( -350px);
-    /** Firefox **/
-}
-
-
-
-
-.move-right {
-    transform: translate( 350px);
-    -webkit-transform: translate( 350px);
-    /** Chrome & Safari **/
-    -ms-transform: translate( 350px);
-    /** Firefox **/
 }
 
 #tunnel {
@@ -130,12 +106,12 @@ p {
 }
 
 #clearedTunnel {
-    position:relative;
+    position: relative;
     height: 52px;
     width: 400px;
     margin-bottom: -52px;
     background-color: #523a17;
-   z-index:-1;
+    z-index: -1;
 }
 
 svg {

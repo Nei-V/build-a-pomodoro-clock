@@ -5,7 +5,7 @@ that it should be possible to change the session length in break like you can ch
 length in session */
 
 
-document.getElementById("timers1").reset(); //the input has to be in a form in order to represh the data
+document.getElementById("timers1").reset(); //the input has to be in a form in order to refresh the data
 let breakSlider = document.getElementById("breakRange");
 let breakValue = document.getElementById("breakStartValue");
 let timeLeft = document.getElementById("showTimeLeft");
@@ -48,6 +48,8 @@ let sessionSliderMoved = false;
 let breakSliderMoved = false;
 let tempSession = 0;//original time of sessions
 let tempBreak = 0;//original time of breaks
+let speedRight = 0;
+let speedLeft = 0;
 
 function getTimerHoursAndMinutes(sessionLength, breakLength, seconds) {
 
@@ -108,7 +110,21 @@ function showTimeLeftEverySecBreak(timeInSeconds) {
 function startAndStop() {
     console.log("counter working in startAndStop", counterWorking);
     if (counterWorking) {
-       
+
+        if (sessionOrBreak == false) {
+            breakSlider.disabled = false;
+            sessionSlider.disabled = false;
+            sessionSlider.addEventListener("click", () => {
+                console.log("session slider moved in session");
+                sessionSliderMoved = true;
+            });
+        }
+        else {
+            console.log("in session if false", sessionOrBreak);
+            breakSlider.disabled = false;
+            sessionSlider.disabled = true;
+        };
+
         breakSlider.addEventListener("click", () => {
 
             if (sessionOrBreak == false) {
@@ -123,20 +139,8 @@ function startAndStop() {
                 breakSliderMoved = true;
             };
         });
-        if (sessionOrBreak == false) {
-            breakSlider.disabled = false;
-            sessionSlider.disabled = false;
-            sessionSlider.addEventListener("click", () => {
-                console.log("session slider moved in session");
-                sessionSliderMoved = true;
-            });
-        }
-        else {
-            console.log("in session if false", sessionOrBreak);
-            breakSlider.disabled = false;
-            sessionSlider.disabled = true;
-        };
-        
+
+
         clearInterval(myVar);
         clearInterval(myVarBreak);
         pauseTransitionRight();
@@ -152,57 +156,92 @@ function startAndStop() {
 
 let myVar;
 function calculateCountdown(minutes, seconds) {
+    document.getElementById("message").innerHTML="Keep working...There's a drink at the end of the tunnel!";
     console.log("NOW WORKING");
+    document.getElementById("miner").style.zIndex = "100";
+    document.getElementById("glass").style.zIndex = "100";
     console.log("session time in calculate", minutes, "and seconds", seconds);
     let totalTimeInSeconds = 60 * minutes + seconds;
     console.log("in calculate session - total seconds", totalTimeInSeconds);
+    let objMiner = document.getElementById("miner");
+    let marginLeftMiner = window.getComputedStyle(objMiner).marginLeft;
+    console.log(` marginLeftMiner is ${marginLeftMiner}`);
+    let marginLeftMinerPx = marginLeftMiner.slice(0, (marginLeftMiner.length - 2));
+    console.log(`marginLeftMinerPx is ${marginLeftMinerPx}`);
+    let marginLeftMinerNumber = parseFloat(marginLeftMinerPx);
+    console.log(`marginLeftMinerNumber ${marginLeftMinerNumber}`);
+    startTransitionRight(totalTimeInSeconds, marginLeftMinerNumber);
+    let newPositionPx = marginLeftMinerNumber;
     function countEverySecond() {
         totalTimeInSeconds = totalTimeInSeconds - 1;
         console.log("session time left in sec: ", totalTimeInSeconds);
         tempTimerSeconds = totalTimeInSeconds;
         tempTimerSecondsHelper = tempTimerSeconds % 60;
         tempTimerMinutes = (tempTimerSeconds - tempTimerSecondsHelper) / 60;
-        let objMiner=document.getElementById("miner");
-    let marginLeftMiner=window.getComputedStyle(objMiner).marginLeft;
-    let marginLeftMinerPx=marginLeftMiner.match(/\d+/);
+
+
+        console.log(`newPositionPx ${newPositionPx}`);
+        newPositionPx = newPositionPx + speedRight;
+        console.log(`newPositionPx ${newPositionPx}`);
+        let newPosition = newPositionPx + "px";
+        document.getElementById("miner").style.marginLeft = newPosition;
+       
         if (totalTimeInSeconds > -1) {
             showTimeLeftEverySec(totalTimeInSeconds);
-            startTransitionRight(totalTimeInSeconds,marginLeftMinerPx);
-           
         }
         else {
             clearInterval(myVar);
-           
+            document.getElementById("miner").style.zIndex = "-100";
+            document.getElementById("glass").style.zIndex = "-100";
             calculateCountdownBreak(breakValue.innerHTML, sessionSeconds);
+            document.getElementById("miner").style.marginLeft="0px";
         };
     };
     if (counterWorking == true) {
         sessionOrBreak = false;
-        
+
         myVar = setInterval(countEverySecond, 1000);
-        
-         };
+
+    };
 };
 
 let myVarBreak;
 function calculateCountdownBreak(minutes, seconds) {
+    document.getElementById("message").innerHTML="Enjoy your break!";
     console.log("NOW IN BREAK");
     console.log("break time in calculate", minutes, "and seconds", seconds);
+    document.getElementById("relaxing").style.zIndex = "100";
     let totalTimeInSeconds = 60 * minutes + seconds;
     console.log("in calculate break - total seconds", totalTimeInSeconds);
+    let objRelaxing = document.getElementById("relaxing");
+    let widthRightRelaxing = window.getComputedStyle(objRelaxing).width;
+    console.log(` marginRightRelaxing is ${widthRightRelaxing}`);
+    let widthRightRelaxingPx = widthRightRelaxing.slice(0, (widthRightRelaxing.length - 2));
+    console.log(`marginRightRelaxingPx is ${widthRightRelaxingPx}`);
+    let widthRightRelaxingNumber = parseFloat(widthRightRelaxingPx);
+    console.log(`marginRightRelaxingNumber ${widthRightRelaxingNumber}`);
+    startTransitionLeft(totalTimeInSeconds, widthRightRelaxingNumber);
+    let newPositionRelaxingPx = widthRightRelaxingNumber;
     function countEverySecond() {
         totalTimeInSeconds = totalTimeInSeconds - 1;
         console.log("break time left in sec: ", totalTimeInSeconds);
         tempTimerSeconds = totalTimeInSeconds;
         tempTimerSecondsHelper = tempTimerSeconds % 60;
         tempTimerMinutes = (tempTimerSeconds - tempTimerSecondsHelper) / 60;
+        console.log(`newPositionRelaxingPx ${newPositionRelaxingPx}`);
+        newPositionRelaxingPx = newPositionRelaxingPx - speedLeft;
+        console.log(`newPositionRelaxingPx ${newPositionRelaxingPx}`);
+        let newPositionRelaxing = newPositionRelaxingPx + "px";
+        document.getElementById("relaxing").style.width = newPositionRelaxing;
 
         if (totalTimeInSeconds > -1) {
             showTimeLeftEverySecBreak(totalTimeInSeconds);
         }
         else {
             clearInterval(myVarBreak);
+            document.getElementById("relaxing").style.zIndex = "-100";
             calculateCountdown(sessionValue.innerHTML, sessionSeconds);
+            document.getElementById("relaxing").style.width="400px";
         };
     };
     if (counterWorking == true) {
@@ -212,8 +251,8 @@ function calculateCountdownBreak(minutes, seconds) {
 };
 
 timeLeft.addEventListener("click", () => {
-       console.log("Clicked");
-    console.log("session or break - false for session", sessionOrBreak);
+    console.log("Clicked");
+    console.log("session or break - FALSE for SESSION", sessionOrBreak);
     startAndStop();
     if (counterWorking == false) {
         if (tempTimerSeconds == 0) {
@@ -225,6 +264,7 @@ timeLeft.addEventListener("click", () => {
 
         if (sessionSliderMoved == true) {
             console.log("sessionslider moved", sessionSliderMoved);
+            document.getElementById("miner").style.marginLeft="0px";
             calculateCountdown(sessionValue.innerHTML, sessionSeconds);
             sessionSliderMoved = false;
         }
@@ -232,11 +272,13 @@ timeLeft.addEventListener("click", () => {
             console.log("breakslider moved", breakSliderMoved);
 
             breakSliderMoved = false;
+            document.getElementById("relaxing").style.width="400px";
             calculateCountdownBreak(breakValue.innerHTML, sessionSeconds);
 
         }
         else if ((sessionOrBreak == true) && (breakSliderMoved == false)) {
             breakSliderMoved = false;
+           
             calculateCountdownBreak(tempTimerMinutes, tempTimerSecondsHelper);
 
         }
@@ -255,36 +297,34 @@ timeLeft.addEventListener("click", () => {
 });
 
 
-let marginRightRelaxing="400px";
-function startTransitionRight(time,startPosition){
-    console.log("total time ", time," startposition miner ",startPosition);
-    //console.log("margin left miner in px", marginLeftMinerPx);
-let speed=(350 - startPosition)/time;
-let newPositionPx=+speed;
-let newPosition=newPositionPx + "px";
-document.getElementById("miner").style.marginLeft=newPosition;
-  //document.getElementById("miner").classList.add("move-right");
-    
-};
-
-function startTransitionLeft(){
-    //document.getElementById("relaxing").classList.add("move-left");
+//let marginRightRelaxing = "400px";
+function startTransitionRight(time, startPosition) {
+    console.log("total time ", time, " startposition miner ", startPosition);
+    speedRight = (300 - startPosition) / time;
+    console.log("speed", speedRight);
 
 };
 
-function pauseTransitionRight(){
-   
-};
-
-function pauseTransitionLeft(){
-
-};
-
-function endTransitionRight(){
+function startTransitionLeft(time, startPosition) {
+   console.log(`total time ${time} startposition relaxing ${startPosition}`);
+   speedLeft = (350 - (400 - startPosition)) / time;
+   console.log("speed", speedLeft);
 
 };
 
-function endTransitionLeft(){
+function pauseTransitionRight() {
+
+};
+
+function pauseTransitionLeft() {
+
+};
+
+function endTransitionRight() {
+
+};
+
+function endTransitionLeft() {
 
 };
 
